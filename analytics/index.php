@@ -59,6 +59,11 @@
 		$table .= "</tr>";
 	$table .= "</thead>"; */
 	
+	//значения для аналитики
+	$count = 0;
+	$sumRes = 0;
+	$averageRes = 0;
+	
 	//тело таблицы
 	while ($row = $data->fetch_assoc()) {
 		$table .= "<tr>";
@@ -66,8 +71,11 @@
 			$table .= "<td>";$table .= $row['date']; $table .= "</td>";
 			$table .= "<td>";$table .= $row['result']; $table .= "</td>";
 		$table .= "</tr>";
+		$count = $count + 1;
+		$sumRes = $sumRes + $row['result'];
 	}
-	//конец таблицы
+	if ($count == 0) { $averageRes = 0; }
+	else { $averageRes = round(($sumRes / $count), 2); }
 	$table .= "</table>";
 	
 	//выбор игры
@@ -78,6 +86,17 @@
 		$selectGame .= $row['name'];
 		$selectGame .= "</option>";
 	}
+	
+	//подвал таблицы
+	$tableFoot = "<table border='1'>";
+		$tableFoot .= "<tfoot>";
+			$tableFoot .= "<tr>";
+				$tableFoot .= "<td>Итого</td>";
+				$tableFoot .= "<td>Кол-во: "; $tableFoot .= $count; $tableFoot .="</td>";
+				$tableFoot .= "<td>Ср. счет: "; $tableFoot .= $averageRes; $tableFoot .="</td>";
+			$tableFoot .= "</tr>";
+		$tableFoot .= "</tfoot>";
+	$tableFoot .= "</table>";
 ?>
 
 <html>
@@ -135,13 +154,17 @@
 							<input type="submit" value="Выбор" style="margin: 30px 0px 10px;">
 						</div>
 						
-						<div>
+						<div style="margin: 0px 0px 50px 0px;">
 							<table border='1'><thead><tr>
 								<td>Название игры</td> <td>Дата</td> <td>Счет</td>
 							</tr></thead></table>
-							<div class="contentTable"><?php print("$table") ?></div>
+							
+							<div class="contentTable">
+								<?php print("$table") ?>
+							</div>
+							<?php print("$tableFoot") ?>
+							
 						</div>
-						
 					</div>
 				</div>
 			</form>
