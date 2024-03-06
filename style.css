@@ -113,6 +113,10 @@ img {
 	margin: 20 20 0 20;
 }
 
+.analyticsDate {
+	text-align: center;
+}
+
 .analyticsTable {
 	border: 1px solid black;
 	color: #000000;
@@ -154,6 +158,7 @@ td {
 	border-radius: 20px;
 	padding: 5;
 	margin: 5;
+	width: 110px;
 }
 
 input {
