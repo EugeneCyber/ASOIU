@@ -11,30 +11,32 @@
 	$result = $conn->query("SELECT id FROM users WHERE login='$login'");
 	$myrow = $result->fetch_assoc();
 	//Проверка наличия пользователя с таким логином
-	if (!empty($myrow['id'])) {
-		//Проверка пароля
-		$checkPass = $conn->query("SELECT password FROM users WHERE login='$login'");
-		$passRow = $checkPass->fetch_assoc();
-		
-		if ($passRow['password'] == $password) {
-			//echo "<script>alert('Успешный вход!');</script>";
-			$_SESSION["login"] = $login;
-			setcookie(
-				"cookieLogin",
-				$login,
-				$expires_or_options = 0,
-				$path = "/");
+	if (isset($_POST["login"])) {
+		if (!empty($myrow['id'])) {
+			//Проверка пароля
+			$checkPass = $conn->query("SELECT password FROM users WHERE login='$login'");
+			$passRow = $checkPass->fetch_assoc();
 			
-			//Переход на главную страницу
-			header("Location: /asoiu/");
-			die();
+			if ($passRow['password'] == $password) {
+				//echo "<script>alert('Успешный вход!');</script>";
+				$_SESSION["login"] = $login;
+				setcookie(
+					"cookieLogin",
+					$login,
+					$expires_or_options = 0,
+					$path = "/");
+				
+				//Переход на главную страницу
+				header("Location: /asoiu/");
+				die();
+			}
+			else {
+				echo "<script>alert('Неверный пароль!');</script>";
+			}
 		}
 		else {
-			echo "<script>alert('Неверный пароль!');</script>";
+			echo "<script>alert('Пользователь с таким логином не найден!');</script>";
 		}
-	}
-	else {
-		//echo "<script>alert('Пользователь с таким логином не найден!');</script>";
 	}
 	
 ?>
